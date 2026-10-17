@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="MultiDeck 2.0: demostración interactiva de un panel de redes sociales con datos ficticios.">
+  <!-- Sin recursos externos: la demo no hace ninguna llamada de red. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; font-src 'self'">
+  <title>MultiDeck 2.0 · Demostración</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23A9502F'/%3E%3Cpath d='M8 9h4v14H8zM14 9h4v14h-4zM20 9h4v9h-4z' fill='%23FBF8F3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <div class="demo-banner" role="note">
+    <span class="demo-banner__pill">Demo</span>
+    <span><strong>Datos de demostración</strong> · Sin conexión a redes sociales</span>
+    <span class="demo-banner__extra" id="persist-note"></span>
+  </div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="Navegación">
+      <div class="logo">
+        <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="logo__text">MultiDeck <em>2.0</em></span>
+      </div>
+      <nav class="nav" aria-label="Secciones principales">
+        <ul>
+          <li><a class="nav__item" href="#inicio" data-view="inicio"><span class="nav__icon" data-icon="home"></span><span class="nav__label">Inicio</span></a></li>
+          <li><a class="nav__item" href="#bandeja" data-view="bandeja"><span class="nav__icon" data-icon="inbox"></span><span class="nav__label">Bandeja</span><span class="nav__badge" id="nav-unread" hidden></span></a></li>
+          <li><a class="nav__item" href="#calendario" data-view="calendario"><span class="nav__icon" data-icon="calendar"></span><span class="nav__label">Calendario</span></a></li>
+          <li><a class="nav__item" href="#analitica" data-view="analitica"><span class="nav__icon" data-icon="chart"></span><span class="nav__label">Analítica</span></a></li>
+        </ul>
+      </nav>
+      <div class="sidebar__foot">
+        <p class="sidebar__note">Panel de práctica. Nada de lo que hagas aquí sale de este navegador.</p>
+        <button type="button" class="btn btn--ghost btn--sm" id="reset-demo"><span data-icon="reset"></span>Restablecer demo</button>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div class="topbar__heading">
+          <span class="topbar__logo" aria-hidden="true">MultiDeck <em>2.0</em></span>
+          <h1 id="view-title">Inicio</h1>
+          <p id="view-subtitle" class="topbar__sub"></p>
+        </div>
+        <div class="topbar__actions" id="view-actions"></div>
+      </header>
+
+      <section class="brandbar" id="brandbar" aria-label="Filtro de marcas"></section>
+
+      <main id="main" tabindex="-1">
+        <section class="view view--home" id="view-inicio" data-view="inicio" aria-labelledby="view-title"></section>
+        <section class="view view--inbox" id="view-bandeja" data-view="bandeja" aria-labelledby="view-title" hidden></section>
+        <section class="view view--calendar" id="view-calendario" data-view="calendario" aria-labelledby="view-title" hidden></section>
+        <section class="view view--analytics" id="view-analitica" data-view="analitica" aria-labelledby="view-title" hidden></section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Diálogo: añadir o editar columna -->
+  <dialog class="dialog" id="dialog-column" aria-labelledby="dialog-column-title">
+    <form class="dialog__form" id="form-column" novalidate>
+      <header class="dialog__head">
+        <h2 id="dialog-column-title">Añadir columna</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Cerrar"><span data-icon="close"></span></button>
+      </header>
+      <div class="dialog__body">
+        <fieldset class="type-picker" id="column-type-field">
+          <legend>Tipo de feed</legend>
+          <label class="type-option"><input type="radio" name="type" value="home" checked><span class="type-option__card"><span data-icon="home"></span><strong>Inicio</strong><small>Publicaciones recientes ficticias</small></span></label>
+          <label class="type-option"><input type="radio" name="type" value="mentions"><span class="type-option__card"><span data-icon="at"></span><strong>Menciones</strong><small>Menciones a las marcas de demostración</small></span></label>
+          <label class="type-option"><input type="radio" name="type" value="accounts"><span class="type-option__card"><span data-icon="users"></span><strong>Menciones de cuentas</strong><small>Publicaciones que mencionan a cuentas que elijas</small></span></label>
+          <label class="type-option"><input type="radio" name="type" value="list"><span class="type-option__card"><span data-icon="list"></span><strong>Listas</strong><small>Publicaciones de una colección ficticia</small></span></label>
+        </fieldset>
+
+        <div class="field" id="field-accounts" hidden>
+          <label for="col-accounts">Cuentas a seguir <span class="field__hint-inline">(hasta 8, separadas por comas)</span></label>
+          <input id="col-accounts" name="accounts" type="text" autocomplete="off" spellcheck="false" placeholder="@revista_fogon, @mercado_alto" aria-describedby="col-accounts-hint col-accounts-error">
+          <p class="field__hint" id="col-accounts-hint">Prueba con cuentas de los datos de muestra: <span id="account-suggestions"></span></p>
+          <p class="field__error" id="col-accounts-error" aria-live="polite"></p>
+        </div>
+
+        <div class="field" id="field-list" hidden>
+          <label for="col-list">Colección</label>
+          <select id="col-list" name="listId"></select>
+        </div>
+
+        <div class="field">
+          <label for="col-title">Título de la columna <span class="field__hint-inline">(opcional)</span></label>
+          <input id="col-title" name="title" type="text" maxlength="40" autocomplete="off" aria-describedby="col-title-error">
+          <p class="field__error" id="col-title-error" aria-live="polite"></p>
+        </div>
+      </div>
+      <footer class="dialog__foot">
+        <button type="button" class="btn btn--ghost" data-close>Cancelar</button>
+        <button type="submit" class="btn btn--primary" id="column-submit">Añadir columna</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <!-- Diálogo: marcas locales -->
+  <dialog class="dialog" id="dialog-brand" aria-labelledby="dialog-brand-title">
+    <form class="dialog__form" id="form-brand" novalidate>
+      <header class="dialog__head">
+        <h2 id="dialog-brand-title">Añadir marca de demostración</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Cerrar"><span data-icon="close"></span></button>
+      </header>
+      <div class="dialog__body">
+        <p class="dialog__intro">La marca solo existe en este navegador. No se crea ni se vincula ninguna cuenta real.</p>
+        <div class="field">
+          <label for="brand-name">Nombre de la marca</label>
+          <input id="brand-name" name="name" type="text" maxlength="30" autocomplete="off" placeholder="Por ejemplo, Monte Claro" aria-describedby="brand-name-error">
+          <p class="field__error" id="brand-name-error" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="brand-handle">@usuario ficticio <span class="field__hint-inline">(opcional)</span></label>
+          <input id="brand-handle" name="handle" type="text" maxlength="31" autocomplete="off" spellcheck="false" placeholder="monteclaro" aria-describedby="brand-handle-hint brand-handle-error">
+          <p class="field__hint" id="brand-handle-hint">Si lo dejas vacío, se genera a partir del nombre.</p>
+          <p class="field__error" id="brand-handle-error" aria-live="polite"></p>
+        </div>
+        <div class="local-brands" id="local-brands"></div>
+      </div>
+      <footer class="dialog__foot">
+        <button type="button" class="btn btn--ghost" data-close>Cerrar</button>
+        <button type="submit" class="btn btn--primary">Añadir marca</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/views/brands.js"></script>
+  <script src="js/views/home.js"></script>
+  <script src="js/views/inbox.js"></script>
+  <script src="js/views/calendar.js"></script>
+  <script src="js/views/analytics.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
