@@ -6,7 +6,9 @@ La app no se conecta a ninguna red social, no hace llamadas de red y no publica 
 
 ## Cómo iniciarla
 
-Sin dependencias ni compilación. Desde esta carpeta:
+Versión publicada (GitHub Pages): <https://medinacaj.github.io/multideck/>
+
+En local, sin dependencias ni compilación. Desde la raíz del repositorio:
 
 ```bash
 python3 -m http.server 8080
@@ -32,6 +34,7 @@ la app funciona en memoria durante la sesión. «Restablecer demo», en la barra
 ## Estructura
 
 ```
+AGENTS.md, CLAUDE.md, docs/   Instrucciones para agentes y revisión jurídico-tecnológica
 index.html          Estructura, diálogos y aviso de demostración
 css/styles.css      Estilos (tokens de color, diseño adaptable)
 js/data.js          Datos ficticios
