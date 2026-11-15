@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 
-const source = fs.readFileSync(path.join(__dirname, '..', 'multideck-2', 'js', 'store.js'), 'utf8');
+const source = fs.readFileSync(path.join(__dirname, '..', 'js', 'store.js'), 'utf8');
 
 function build({ failWrites = false, failReads = false, noStorage = false, initialSaved } = {}) {
   const items = new Map();

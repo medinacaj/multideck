@@ -3,7 +3,8 @@ on:
   pull_request:
     paths:
       - 'index.html'
-      - 'multideck-2/**'
+      - 'css/**'
+      - 'js/**'
       - 'tests/browser-qa.py'
       - '.github/workflows/browser-qa.yml'
   workflow_dispatch:

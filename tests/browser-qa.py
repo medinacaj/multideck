@@ -14,9 +14,10 @@ with sync_playwright() as p:
     page.on("pageerror", lambda e: errors.append(str(e)))
     page.on("request", lambda r: requests.append(r.url))
     response = page.goto(BASE, wait_until="domcontentloaded", timeout=30000)
-    assert response is not None
-    page.wait_for_url("**/multideck-2/index.html*", timeout=15000)
+    assert response is not None and response.status == 200
+    assert urlparse(page.url).path in ("/", "/index.html"), "La aplicación debe abrir en la raíz, sin redirección de ruta"
     assert page.locator(".demo-banner").get_by_text("Datos de demostración").is_visible()
+    assert not page.locator('meta[http-equiv="refresh"]').count(), "No se permite una redirección en la raíz"
 
     for view, name in VIEWS.items():
         page.locator(f"a[data-view='{view}']").click()
@@ -44,7 +45,7 @@ with sync_playwright() as p:
       get() { throw new Error('Storage disabled by browser'); }
     });""")
     check = restricted.new_page()
-    check.goto(BASE + "multideck-2/index.html", wait_until="domcontentloaded", timeout=30000)
+    check.goto(BASE, wait_until="domcontentloaded", timeout=30000)
     assert check.locator("#view-title").inner_text() == "Inicio"
     assert "no se pudieron guardar" in check.locator("#persist-note").inner_text().lower()
     restricted.close()
