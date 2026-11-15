@@ -92,12 +92,32 @@ MD.store = (function () {
       const parsed = JSON.parse(raw);
       if (!parsed || parsed.version !== 1) return defaults();
       const base = defaults();
-      const merged = Object.assign(base, parsed);
-      if (!Array.isArray(merged.columns)) merged.columns = defaultColumns();
-      if (!Array.isArray(merged.selectedBrands)) merged.selectedBrands = base.selectedBrands;
-      if (!Array.isArray(merged.customBrands)) merged.customBrands = [];
-      if (!Array.isArray(merged.scheduled)) merged.scheduled = seedScheduled();
-      return merged;
+      // Allow only known state keys: malformed local JSON must not rewrite
+      // the prototype or make entire views crash on null array members.
+      for (const key of Object.keys(base)) {
+        if (Object.prototype.hasOwnProperty.call(parsed, key)) base[key] = parsed[key];
+      }
+      base.customBrands = Array.isArray(base.customBrands) ? base.customBrands.filter(b =>
+        b && typeof b.id === 'string' && typeof b.name === 'string' &&
+        typeof b.handle === 'string' && typeof b.color === 'string') : [];
+      base.columns = Array.isArray(base.columns) ? base.columns.filter(c =>
+        c && typeof c.id === 'string' && ['home', 'mentions', 'accounts', 'list'].includes(c.type))
+        .map(c => ({
+          ...c,
+          title: typeof c.title === 'string' ? c.title : '',
+          query: typeof c.query === 'string' ? c.query : '',
+          accounts: Array.isArray(c.accounts) ? c.accounts.filter(a => typeof a === 'string') : []
+        })) : defaultColumns();
+      base.selectedBrands = Array.isArray(base.selectedBrands) ?
+        [...new Set(base.selectedBrands.filter(id => typeof id === 'string'))] : data.brands.map(b => b.id);
+      base.scheduled = Array.isArray(base.scheduled) ? base.scheduled.filter(item =>
+        item && typeof item.brand === 'string' && typeof item.at === 'string' &&
+        Number.isFinite(Date.parse(item.at))) : seedScheduled();
+      base.unread = base.unread && typeof base.unread === 'object' && !Array.isArray(base.unread) ? base.unread : {};
+      base.inboxFilter = ['all', 'mentions', 'unread'].includes(base.inboxFilter) ? base.inboxFilter : 'all';
+      base.view = ['inicio', 'bandeja', 'calendario', 'analitica'].includes(base.view) ? base.view : 'inicio';
+      if (!Number.isSafeInteger(base.analyticsRange) || base.analyticsRange < 1 || base.analyticsRange > 365) base.analyticsRange = 14;
+      return base;
     } catch (e) {
       return defaults();
     }
