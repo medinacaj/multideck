@@ -1,0 +1,30 @@
+name: MultiDeck — browser QA de demo y privacidad
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'multideck-2/**'
+      - 'tests/browser-qa.py'
+      - '.github/workflows/browser-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright Chromium
+        run: |
+          python -m pip install "playwright==1.56.0"
+          python -m playwright install --with-deps chromium
+      - name: Run four-view browser tests without external platforms
+        run: |
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/multideck-browser.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" || true' EXIT
+          python tests/browser-qa.py
