@@ -18,11 +18,33 @@ MD.store = (function () {
       const probe = '__md_probe__';
       window.localStorage.setItem(probe, '1');
       window.localStorage.removeItem(probe);
+      let writable = true;
+      let memory = null;
       return {
-        persistent: true,
-        get: () => window.localStorage.getItem(KEY),
-        set: (v) => { try { window.localStorage.setItem(KEY, v); } catch (e) { /* cuota llena: seguimos en memoria */ } },
-        clear: () => { try { window.localStorage.removeItem(KEY); } catch (e) { /* nada */ } }
+        get persistent() { return writable; },
+        get() {
+          if (!writable) return memory;
+          try { return window.localStorage.getItem(KEY); }
+          catch {
+            // Storage can become unavailable after a successful probe.
+            writable = false;
+            return memory;
+          }
+        },
+        set(value) {
+          if (!writable) { memory = value; return; }
+          try { window.localStorage.setItem(KEY, value); }
+          catch {
+            // Quota and permission failures must be visible to the UI.
+            writable = false;
+            memory = value;
+          }
+        },
+        clear() {
+          memory = null;
+          try { window.localStorage.removeItem(KEY); }
+          catch { writable = false; }
+        }
       };
     } catch (e) {
       let mem = null;
@@ -309,7 +331,7 @@ MD.store = (function () {
 
   return {
     get state() { return state; },
-    persistent: storage.persistent,
+    get persistent() { return storage.persistent; },
     loadedAt, MAX_ACCOUNTS, MAX_BRANDS,
     subscribe, brands, brandById, isSelected, selectedBrands, allSelected, channelName, listById,
     allPosts, postsForColumn, conversations, visibleConversations, unreadCount, scheduledVisible,
