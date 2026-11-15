@@ -58,7 +58,7 @@ with sync_playwright() as p:
     assert page.locator("#main").evaluate("(el) => el === document.activeElement")
     page.locator("#brand-toggle-all").click()
     assert page.locator("[data-brand][aria-pressed='true']").count() == 0
-    assert page.locator(".count-pill").inner_text() == "Ninguna marca activa"
+    assert page.locator("#brandbar .count-pill").inner_text() == "Ninguna marca activa"
     page.locator("#brand-toggle-all").click()
     assert page.locator("[data-brand][aria-pressed='true']").count() >= 3
 
