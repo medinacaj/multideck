@@ -39,15 +39,14 @@ with sync_playwright() as p:
     # Browser without localStorage still renders the demo, and warns that
     # unsaved changes will not persist across sessions.
     restricted = browser.new_context(viewport={"width": 390, "height": 844})
-    restricted.add_init_script("""() => {
-      Object.defineProperty(window, 'localStorage', {
-        configurable: true, get() { throw new Error('Storage disabled by browser'); }
-      });
-    }""".replace("() => {", "{", 1).replace("}\n", "}", 1))
+    restricted.add_init_script("""Object.defineProperty(window, 'localStorage', {
+      configurable: true,
+      get() { throw new Error('Storage disabled by browser'); }
+    });""")
     check = restricted.new_page()
     check.goto(BASE + "multideck-2/index.html", wait_until="domcontentloaded", timeout=30000)
     assert check.locator("#view-title").inner_text() == "Inicio"
-    assert "no se guardarán" in check.locator("#persist-note").inner_text().lower()
+    assert "no se pudieron guardar" in check.locator("#persist-note").inner_text().lower()
     restricted.close()
 
     print("MultiDeck: four views, keyboard nav state, local storage and privacy verified at 320–1280 px")
