@@ -20,7 +20,7 @@ with sync_playwright() as p:
 
     for view, name in VIEWS.items():
         page.locator(f"a[data-view='{view}']").click()
-        assert page.locator("#view-title").inner_text() == name, view
+        page.wait_for_function("title => document.getElementById('view-title')?.textContent === title", arg=name, timeout=5000)
         assert page.locator("#view-" + view).is_visible(), view
         assert page.locator(f"a[data-view='{view}']").get_attribute("aria-current") == "page", view
         for width in (320, 390, 768, 1280):
