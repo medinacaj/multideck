@@ -6,14 +6,14 @@ La app no se conecta a ninguna red social, no hace llamadas de red y no publica 
 
 ## Cómo iniciarla
 
-Sin dependencias ni compilación. Desde esta carpeta:
+Sin dependencias ni compilación. Desde la raíz del repositorio:
 
 ```bash
 python3 -m http.server 8080
 # o bien: npx serve .
 ```
 
-Abre <http://localhost:8080>. También funciona abriendo `index.html` directamente en el navegador.
+Abre <http://localhost:8080>. La versión publicada está en <https://medinacaj.github.io/multideck/>. También funciona abriendo `index.html` directamente en el navegador.
 
 ## Qué incluye
 
@@ -41,3 +41,10 @@ js/ui.js            Iconos, avisos y diálogos
 js/views/*.js       Marcas, Inicio, Bandeja, Calendario y Analítica
 js/app.js           Arranque y navegación
 ```
+
+
+## Migración desde la subcarpeta antigua
+
+Desde noviembre de 2026 la demo se sirve directamente en la raíz. `/multideck-2/` dejó de ser una ruta publicada; reemplaza los marcadores de esa dirección por `/multideck/`. La clave de `localStorage` (`multideck2.demo.v1`) no cambia y conserva los datos del mismo origen.
+
+Las pruebas de navegador (`tests/browser-qa.py`) y de persistencia (`tests/store-persistence.test.cjs`) se ejecutan en PR; la aplicación sigue siendo una demo sin integraciones externas.
