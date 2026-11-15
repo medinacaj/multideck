@@ -52,9 +52,12 @@
     MD.brandsView.init();
     Object.keys(VIEWS).forEach((k) => VIEWS[k].init());
 
-    if (!store.persistent) {
-      document.getElementById('persist-note').textContent = '· El almacenamiento local no está disponible: los cambios durarán solo esta sesión.';
+    function updatePersistenceNotice() {
+      const note = document.getElementById('persist-note');
+      note.textContent = store.persistent ? '' :
+        '· No se pudieron guardar cambios en este navegador: se perderán al cerrar o recargar la página.';
     }
+    updatePersistenceNotice();
 
     // Diálogos: botones de cierre y clic en el fondo.
     document.querySelectorAll('dialog').forEach((d) => {
@@ -72,7 +75,7 @@
     });
 
     window.addEventListener('hashchange', () => show(viewFromHash(), { focus: true }));
-    store.subscribe(() => updateChrome());
+    store.subscribe(() => { updateChrome(); updatePersistenceNotice(); });
 
     const initial = VIEWS[viewFromHash()] ? viewFromHash() : store.state.view;
     if (location.hash.replace('#', '') !== initial) history.replaceState(null, '', '#' + initial);
