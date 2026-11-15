@@ -50,5 +50,37 @@ with sync_playwright() as p:
     assert "no se pudieron guardar" in check.locator("#persist-note").inner_text().lower()
     restricted.close()
 
-    print("MultiDeck: four views, keyboard nav state, local storage and privacy verified at 320–1280 px")
+    # Keyboard, brand filter and dialog behavior work without external accounts.
+    page.goto(BASE, wait_until="domcontentloaded")
+    page.keyboard.press("Tab")
+    assert page.locator(".skip-link").evaluate("(el) => el === document.activeElement")
+    page.keyboard.press("Enter")
+    assert page.locator("#main").evaluate("(el) => el === document.activeElement")
+    page.locator("#brand-toggle-all").click()
+    assert page.locator("[data-brand][aria-pressed='true']").count() == 0
+    assert page.locator("#brandbar .count-pill").inner_text() == "Ninguna marca activa"
+    page.locator("#brand-toggle-all").click()
+    assert page.locator("[data-brand][aria-pressed='true']").count() >= 3
+
+    page.locator("#brand-add").click()
+    dialog = page.locator("#dialog-brand")
+    assert dialog.is_visible()
+    assert dialog.get_attribute("aria-labelledby") == "dialog-brand-title"
+    page.locator("#brand-name").fill("Marca local de prueba")
+    page.locator("#form-brand button[type='submit']").click()
+    assert not dialog.is_visible()
+    assert page.locator("[data-brand]").count() == 4
+    page.locator("#brand-add").click()
+    page.locator("#dialog-brand [data-close]").first.click()
+    assert not dialog.is_visible()
+    assert page.locator("#brand-add").evaluate("(el) => document.activeElement === el")
+
+    page.once("dialog", lambda prompt: prompt.dismiss())
+    page.locator("#reset-demo").click()
+    assert page.locator("[data-brand]").count() == 4
+    page.once("dialog", lambda prompt: prompt.accept())
+    page.locator("#reset-demo").click()
+    assert page.locator("[data-brand]").count() == 3
+
+    print("MultiDeck: four views, keyboard/brands/dialogs, local storage, privacy and responsive verified")
     browser.close()
