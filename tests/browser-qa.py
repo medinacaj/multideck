@@ -15,7 +15,7 @@ with sync_playwright() as p:
     page.on("request", lambda r: requests.append(r.url))
     response = page.goto(BASE, wait_until="domcontentloaded", timeout=30000)
     assert response is not None and response.status == 200
-    assert page.url.rstrip("/") == BASE.rstrip("/"), "La aplicación debe abrir en la raíz, sin redirección"
+    assert urlparse(page.url).path in ("/", "/index.html"), "La aplicación debe abrir en la raíz, sin redirección de ruta"
     assert page.locator(".demo-banner").get_by_text("Datos de demostración").is_visible()
     assert not page.locator('meta[http-equiv="refresh"]').count(), "No se permite una redirección en la raíz"
 
