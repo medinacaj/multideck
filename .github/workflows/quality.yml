@@ -1,0 +1,28 @@
+name: MultiDeck — pruebas de integridad local
+on:
+  push:
+    paths:
+      - 'multideck-2/js/**'
+      - 'tests/**'
+      - '.github/workflows/quality.yml'
+  pull_request:
+    paths:
+      - 'multideck-2/js/**'
+      - 'tests/**'
+      - '.github/workflows/quality.yml'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Sintaxis del estado y pruebas sin dependencias
+        run: |
+          node --check multideck-2/js/store.js
+          node --check multideck-2/js/app.js
+          node --test tests/*.test.cjs
