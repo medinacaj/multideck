@@ -4,6 +4,14 @@ Panel de gestión de redes sociales con columnas al estilo deck, en español.
 **Todo es de demostración:** marcas, cuentas, publicaciones, mensajes, calendario y cifras son inventados.
 La app no se conecta a ninguna red social, no hace llamadas de red y no publica ni envía nada.
 
+## Estado de entrega: DEMO v1 funcional (15/11/2026)
+
+**Hito técnico completo para el alcance de demostración estática.** La web publicada sirve desde la raíz y permite usar Inicio, Bandeja, Calendario, Analítica, gestión de marcas ficticias y estado local. Las pruebas Node y Chromium comprobaron navegación, teclado básico, persistencia y errores de almacenamiento, filtros, diálogos y responsive de 320 a 1280 px. Los flujos no contactan servicios terceros; el sitio no tiene backend, cuentas, pagos ni publicación real en redes.
+
+**No es una plataforma de redes sociales comercial ni una auditoría completa WCAG.** Para conectar cuentas reales, habilitar roles, programar publicaciones o enviar mensajes se necesita **otro alcance de producto**. Quedan como pendientes de mantenimiento: comprobación manual de lectores de pantalla/Safari/Android/zoom, decisión de licencia del código para reutilización y protección de rama según permisos del repositorio. Esos puntos no impiden usar la demo estática para revisar UX, pero sí impiden afirmar seguridad/compatibilidad comercial o licenciamiento de terceros.
+
+**Criterio de mantenimiento:** cualquier cambio del código debe pasar suites Node y Chromium en PR y en la rama principal. No usar los datos ficticios para tomar decisiones comerciales.
+
 ## Cómo iniciarla
 
 Sin dependencias ni compilación. Desde la raíz del repositorio:

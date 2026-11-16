@@ -15,4 +15,6 @@
 | Licencias externas y reutilización comercial | Pendiente | Revisar recursos y atribuciones antes de comercializar |
 | Protecciones del repositorio | Pendiente de permiso | La rama predeterminada figuraba `protected:false`; revisión de rulesets/administración requiere acceso autorizado |
 
-Esta auditoría deja controles no aplicables explícitos. **El issue #6 permanece abierto** hasta revisión de controles manuales, derechos de uso y reglas GitHub o aceptación documentada de los riesgos. Ninguna evidencia de CI sustituye dichas verificaciones.
+**Resultado de la auditoría proporcional a la DEMO:** rutas, cinco vistas, persistencia, errores, datos ficticios, privacidad local, teclado básico, responsive y CI están inspeccionados y probados. Las materias no pertinentes a una demo estática (backend, cuentas reales, pagos, SEO comercial) se declaran No aplicables. El propio producto queda entregado como **demo funcional v1**, no plataforma comercial.
+
+**Hallazgos diferidos a seguimiento específico (no conformidad declarada):** WCAG manual y dispositivos, licencia/atribución para reutilización o venta, protección de rama y reglas de revisión. No se certifica un lector de pantalla real ni se afirma que GitHub tenga reglas de protección vigentes. El issue general de auditoría #6 puede cerrarse **sólo como evaluación técnica realizada**, una vez enlazado el seguimiento específico; el producto continúa rotulado y limitado como DEMO.
