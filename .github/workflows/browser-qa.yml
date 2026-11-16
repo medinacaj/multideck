@@ -1,5 +1,13 @@
 name: MultiDeck — browser QA de demo y privacidad
 on:
+  push:
+    branches: [claude/intelligent-cray-7r5z52]
+    paths:
+      - 'index.html'
+      - 'css/**'
+      - 'js/**'
+      - 'tests/browser-qa.py'
+      - '.github/workflows/browser-qa.yml'
   pull_request:
     paths:
       - 'index.html'
