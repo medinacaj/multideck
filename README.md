@@ -56,3 +56,17 @@ js/app.js           Arranque y navegación
 Desde noviembre de 2026 la demo se sirve directamente en la raíz. `/multideck-2/` dejó de ser una ruta publicada; reemplaza los marcadores de esa dirección por `/multideck/`. La clave de `localStorage` (`multideck2.demo.v1`) no cambia y conserva los datos del mismo origen.
 
 Las pruebas de navegador (`tests/browser-qa.py`) y de persistencia (`tests/store-persistence.test.cjs`) se ejecutan en PR; la aplicación sigue siendo una demo sin integraciones externas.
+
+## Continuidad y estado verificable · 21/11/2026
+
+**Propósito:** Demo estática de gestión de redes sociales.
+
+**Límite del alcance:** No hay integración ni publicación en redes reales.
+
+- **Código:** revisar la rama por defecto, los PR y los commits antes de afirmar novedades; las evidencias históricas anteriores mantienen su fecha.
+- **Pruebas:** consultar los workflows correspondientes al commit evaluado. Esta modificación documental no verifica funcionalidades mediante pruebas de aplicación.
+- **Entorno:** no confundir demo, CI y código fusionado con despliegue funcional o producción comprobada.
+- **Próxima acción:** identificar el bloqueo vigente en los issues y registrar en este repositorio rama, SHA, pruebas, entorno verificado, pendientes y siguiente paso.
+- **Seguridad:** preservar los datos ficticios útiles y no publicar secretos ni información personal.
+
+**Fuente de verdad:** las decisiones y la documentación del propio producto. Consultar primero [memoria operativa](docs/MEMORIA_OPERATIVA.md) y [decisiones](docs/DECISIONES.md). [Issue de seguimiento](https://github.com/medinacaj/multideck/issues/13).
