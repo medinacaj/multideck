@@ -56,3 +56,11 @@ js/app.js           Arranque y navegación
 Desde noviembre de 2026 la demo se sirve directamente en la raíz. `/multideck-2/` dejó de ser una ruta publicada; reemplaza los marcadores de esa dirección por `/multideck/`. La clave de `localStorage` (`multideck2.demo.v1`) no cambia y conserva los datos del mismo origen.
 
 Las pruebas de navegador (`tests/browser-qa.py`) y de persistencia (`tests/store-persistence.test.cjs`) se ejecutan en PR; la aplicación sigue siendo una demo sin integraciones externas.
+
+## Continuidad del proyecto
+
+Este repositorio es la fuente oficial de continuidad: cualquier agente o persona puede retomar el trabajo desde un chat nuevo sin depender de conversaciones anteriores.
+
+1. **Antes de empezar:** leer [`AGENTS.md`](AGENTS.md) (reglas y obligaciones), [`docs/MEMORIA_OPERATIVA.md`](docs/MEMORIA_OPERATIVA.md) (estado vigente, pendientes, bloqueos y siguiente acción) y [`docs/DECISIONES.md`](docs/DECISIONES.md) (decisiones confirmadas).
+2. **Contrastar con GitHub en vivo:** rama predeterminada (`claude/intelligent-cray-7r5z52`), PR e issues abiertos (seguimiento del producto en [#13](https://github.com/medinacaj/multideck/issues/13)) y CI del último SHA. Demo, CI y código fusionado no equivalen a despliegue verificado ni a producción.
+3. **Al terminar:** registrar en la memoria operativa la rama/PR/SHA, las pruebas reales, los bloqueos y una siguiente acción concreta. Preservar los datos ficticios útiles y no publicar secretos ni información personal.
