@@ -23,7 +23,7 @@
 
 ## Cambios pendientes y trabajo abierto
 
-- **PR #16** (`docs/readme-continuidad-20261121`, `a290553`, sin fusionar): sección de continuidad en el README. Su contenido se integra en el PR de esta tarea; si se aprueba este, #16 puede cerrarse como sustituido (decisión del propietario).
+- **PR #16** (`docs/readme-continuidad-20261121`, `a290553`, sin fusionar): sección de continuidad en el README. Su contenido se integra en el PR #17; si se aprueba #17, #16 puede cerrarse como sustituido (decisión del propietario).
 - **Issue #13** [P0]: gestor social operativo con backend real. Bloqueo externo: elegir plataformas/API oficiales, credenciales de desarrollador, dominio y hosting. Sin esa autorización **no se implementan integraciones**.
 - **Issue #12**: accesibilidad asistiva manual (VoiceOver/NVDA, zoom, dispositivos), decisión de licencia (no existe `LICENSE`) y protección de la rama predeterminada (`protected:false`).
 - **Ramas de PR ya cerrados**, conservadas sin borrar: `feat/redirect-raiz` (#4), `feat/app-en-raiz` (#5, sustituido por #9), `governance/legal-tech-review-20261018` (#1), `chore/multi-ai-handoff-2026-10` (#2), `codex/*` (#7–#11), `chore/project-memory-sync-20261119` (#14), `docs/decentralized-continuity-20261120` (#15). Borrarlas requiere autorización del propietario.
@@ -31,7 +31,7 @@
 
 ## Siguiente acción
 
-1. **Propietario:** revisar y fusionar el PR de esta tarea; cerrar #16 si queda sustituido.
+1. **Propietario:** revisar y fusionar el PR #17; cerrar #16 si queda sustituido.
 2. **Propietario, para desbloquear #13:** indicar qué plataformas/API, hosting y dominio se autorizan.
 3. **Agente, si #13 sigue bloqueado:** avanzar la parte automatizable de #12: auditoría de contraste y zoom 200 % con Chromium sobre las cuatro vistas, con evidencia por SHA, en una rama y PR propios.
 
@@ -40,7 +40,7 @@
 Formato obligatorio, una entrada por tarea y la más reciente arriba: **fecha · agente · tarea · rama/PR/SHA · pruebas (comando → resultado, entorno) · bloqueos · siguiente acción.**
 
 - **2026-11-28 · Claude Code · Memoria y continuidad permanentes**
-  - **Cambio:** obligaciones en `AGENTS.md`; registro fechado en `DECISIONES.md`; reestructuración de esta memoria; sección de continuidad en `README.md`. Rama `docs/memoria-continuidad-20261128`, base `cb15e66`.
+  - **Cambio:** obligaciones en `AGENTS.md`; registro fechado en `DECISIONES.md`; reestructuración de esta memoria; sección de continuidad en `README.md`. Rama `docs/memoria-continuidad-20261128`, PR #17, base `cb15e66`.
   - **Pruebas:** contenedor Linux, Node 22, Python 3.13, Chromium 1243.
     - `node --check js/store.js && node --check js/app.js` → OK.
     - `node --test tests/*.test.cjs` → 5/5.
